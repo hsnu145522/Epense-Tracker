@@ -12,4 +12,6 @@
     <include file="db/changelog/create-category-table.xml"/>
     <include file="db/changelog/create-transcation-table.xml"/>
     <include file="db/changelog/insert-example-data.xml"/>
+    <include file="db/changelog/update-category-table.xml"/>
+    <include file="db/changelog/update-transcation-table.xml"/>
 </databaseChangeLog>
