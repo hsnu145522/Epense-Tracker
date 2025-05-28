@@ -1,6 +1,5 @@
 package com.example.expense_tracker.service;
 
-import com.example.expense_tracker.entity.Account;
 import com.example.expense_tracker.entity.Category;
 import com.example.expense_tracker.entity.User;
 import com.example.expense_tracker.entity.Category.CategoryType;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import javax.management.RuntimeErrorException;
 
 @Service
 public class CategoryService {

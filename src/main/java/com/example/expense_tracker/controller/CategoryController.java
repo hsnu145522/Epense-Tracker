@@ -1,6 +1,5 @@
 package com.example.expense_tracker.controller;
 
-import com.example.expense_tracker.entity.Account;
 import com.example.expense_tracker.entity.Category;
 import com.example.expense_tracker.entity.Category.CategoryType;
 import com.example.expense_tracker.service.CategoryService;
