@@ -15,8 +15,10 @@ CREATE TABLE IF NOT EXISTS account (
 
 CREATE TABLE IF NOT EXISTS category (
     id UUID PRIMARY KEY,
+    user_id UUID NOT NULL,
     name VARCHAR(50) NOT NULL,
     type VARCHAR(10) CHECK (type IN ('INCOME', 'EXPENSE')) NOT NULL
+    CONSTRAINT fk_category_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS transaction (
