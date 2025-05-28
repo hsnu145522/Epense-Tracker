@@ -26,9 +26,13 @@ public class User {
     @JsonManagedReference
     private List<Account> accounts;
 
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // @JsonManagedReference
+    // private List<Transaction> transcations;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<Account> transcations;
+    private List<Category> categories;
 
     public User() {
         this.id = UUID.randomUUID(); // Automatically assign UUID
@@ -67,4 +71,5 @@ public class User {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
+
 }
