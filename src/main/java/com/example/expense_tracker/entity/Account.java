@@ -26,8 +26,9 @@ public class Account {
     @Column(nullable = false)
     private BigDecimal balance;
 
-    // @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    // private List<Account> transcations;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Transaction> transactions;
 
     public Account() {
         this.id = UUID.randomUUID();

@@ -1,9 +1,12 @@
 package com.example.expense_tracker.entity;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "category")
@@ -14,7 +17,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference("categories")
     private User user;
 
     @Column(nullable = false, length = 100, unique = true)
@@ -23,6 +26,10 @@ public class Category {
     @Column(nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private CategoryType type;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Transaction> transactions;
 
     public Category() {
         this.id = UUID.randomUUID();
