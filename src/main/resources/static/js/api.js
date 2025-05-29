@@ -156,17 +156,25 @@ export async function getTransactionsByAccount(accountId, token) {
   return await response.json();
 }
 
-// export async function createTransaction(categoryId, accountId, amount, description, token) {
-//   const url = new URL(`${API_BASE_URL}/api/transactions`);
-//   url.searchParams.append("categoryId", categoryId);
-//   url.searchParams.append("accountId", accountId);
-//   url.searchParams.append("amount", amount);
-//   if (description) url.searchParams.append("description", description);
+export async function createTransaction(categoryId, accountId, amount, description, token) {
+  const response = await fetch(`${API_BASE_URL}/api/transactions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      categoryId,
+      accountId,
+      amount,
+      description
+    })
+  });
 
-//   const response = await fetch(url, {
-//     method: "POST",
-//     headers: { Authorization: `Bearer ${token}` }
-//   });
-//   if (!response.ok) throw new Error("Failed to create transaction");
-//   return await response.json();
-// }
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Failed to create transaction');
+  }
+
+  return response.json();
+}

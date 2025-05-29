@@ -1,5 +1,6 @@
 import { renderAccounts } from './account.js';
-import { getAccountsByUser, getTransactionsByAccount } from './api.js';
+import { renderTransactions } from './transaction.js';
+import { getAccountsByUser, getTransactionsByAccount, getCategoriesByUser } from './api.js';
 
 const token = localStorage.getItem('token');
 const userId = localStorage.getItem('userId');
@@ -31,21 +32,23 @@ export async function loadDashboard() {
             allTransactions.push(...txs);
         }
         renderTransactions(allTransactions);
+        // Update account display in Transcation modal
+        const accountSelect = document.getElementById('transactionAccount');
+        accounts.forEach(acc => {
+            const option = document.createElement('option');
+            option.value = acc.id;
+            option.textContent = `${acc.name} ($${acc.balance.toFixed(2)})`;
+            accountSelect.appendChild(option);
+        });
+        // Initially disable category select until type chosen
+        const categorySelect = document.getElementById('transactionCategory');
+        categorySelect.disabled = true;
+
     } catch (e) {
         alert('Failed to load dashboard: ' + e.message);
     }
 }
 
-function renderTransactions(transactions) {
-    const list = document.getElementById('transactionList');
-    list.innerHTML = '';
-    transactions.forEach(tx => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item';
-        li.innerText = `${tx.timestamp} - ${tx.category.name} - $${tx.amount} (${tx.description || ''})`;
-        list.appendChild(li);
-    });
-}
 
 function logout() {
     localStorage.clear();
