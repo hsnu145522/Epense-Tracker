@@ -1,5 +1,7 @@
 package com.example.expense_tracker.controller;
 
+import com.example.expense_tracker.dto.AccountDto;
+import com.example.expense_tracker.dto.CreateAccountDto;
 import com.example.expense_tracker.entity.Account;
 import com.example.expense_tracker.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,22 +42,20 @@ public class AccountController {
     }
 
     // Create an account for a user
-    // POST /api/accounts/user/{userId}?name={name}&initialBalance={initialBalance}
+    // POST /api/accounts/user/{userId}
     @PostMapping("/user/{userId}")
     public Account createAccount(
             @PathVariable UUID userId,
-            @RequestParam String name,
-            @RequestParam(required = false) BigDecimal initialBalance) {
-        return accountService.createAccount(userId, name, initialBalance);
+            @RequestBody CreateAccountDto dto) {
+        return accountService.createAccount(userId, dto.getName(), dto.getInitialBalance());
     }
 
-    // PUT /api/accounts/{accountId}?name={name}&balance={balance}
+    // PUT /api/accounts/{accountId}
     @PutMapping("/{accountId}")
     public Account updateAccount(
             @PathVariable UUID accountId,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) BigDecimal balance) {
-        return accountService.updateAccount(accountId, name, balance);
+            @RequestBody AccountDto dto) {
+        return accountService.updateAccount(accountId, dto.getName(), dto.getBalance());
     }
 
     // DELETE /api/accounts/{accountId}

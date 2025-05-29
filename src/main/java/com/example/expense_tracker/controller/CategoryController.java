@@ -1,5 +1,7 @@
 package com.example.expense_tracker.controller;
 
+import com.example.expense_tracker.dto.CategoryDto;
+import com.example.expense_tracker.dto.UpdateCategoryDto;
 import com.example.expense_tracker.entity.Category;
 import com.example.expense_tracker.entity.Category.CategoryType;
 import com.example.expense_tracker.service.CategoryService;
@@ -18,9 +20,10 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/user/{userId}")
-    public Category createCategory(@PathVariable UUID userId, @RequestParam String name,
-            @RequestParam CategoryType type) {
-        return categoryService.createCategory(userId, name, type);
+    public Category createCategory(
+            @PathVariable UUID userId,
+            @RequestBody CategoryDto dto) {
+        return categoryService.createCategory(userId, dto.getName(), dto.getType());
     }
 
     @GetMapping
@@ -39,8 +42,10 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public Category updateCategory(@PathVariable UUID id, @RequestParam String name) {
-        return categoryService.updateCategory(id, name);
+    public Category updateCategory(
+            @PathVariable UUID id,
+            @RequestBody UpdateCategoryDto dto) {
+        return categoryService.updateCategory(id, dto.getName());
     }
 
     @DeleteMapping("/{id}")

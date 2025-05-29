@@ -1,16 +1,15 @@
 package com.example.expense_tracker.controller;
 
+import com.example.expense_tracker.dto.TransactionDto;
+import com.example.expense_tracker.dto.UpdateTransactionDto;
 import com.example.expense_tracker.entity.Transaction;
 import com.example.expense_tracker.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -32,12 +31,12 @@ public class TransactionController {
 
     @PostMapping
     public Transaction createTransaction(
-            @RequestParam UUID categoryId,
-            @RequestParam UUID accountId,
-            @RequestParam BigDecimal amount,
-            @RequestParam(required = false) String description) {
-        return transactionService.createTransaction(categoryId, accountId, amount,
-                description);
+            @RequestBody TransactionDto dto) {
+        return transactionService.createTransaction(
+                dto.getCategoryId(),
+                dto.getAccountId(),
+                dto.getAmount(),
+                dto.getDescription());
     }
 
     @GetMapping("/categories/{categoryId}")
@@ -51,10 +50,10 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public Transaction updateAmount(
+    public Transaction updateTransaction(
             @PathVariable UUID id,
-            @RequestParam BigDecimal newAmount) {
-        return transactionService.updateTransactionAmount(id, newAmount);
+            @RequestBody UpdateTransactionDto dto) {
+        return transactionService.updateTransactionAmount(id, dto.getNewAmount());
     }
 
     @DeleteMapping("/{id}")
