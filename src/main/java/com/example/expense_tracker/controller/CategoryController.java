@@ -3,7 +3,6 @@ package com.example.expense_tracker.controller;
 import com.example.expense_tracker.dto.CategoryDto;
 import com.example.expense_tracker.dto.UpdateCategoryDto;
 import com.example.expense_tracker.entity.Category;
-import com.example.expense_tracker.entity.Category.CategoryType;
 import com.example.expense_tracker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
