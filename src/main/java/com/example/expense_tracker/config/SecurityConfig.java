@@ -29,18 +29,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF
-            .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless, JWT-based
-            )
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(                "/index.html","/register.html","/css/**","/js/**",
-                    "/images/**","/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Public
-                                                                                                        // access
-                    .anyRequest().authenticated() // All other endpoints require authentication
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+                .csrf(csrf -> csrf.disable()) // Disable CSRF
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless, JWT-based
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/index.html", "/register.html", "/dashboard.html", "/css/**", "/js/**",
+                                "/images/**", "/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/favicon.ico")
+                        .permitAll() // Public
+                        // access
+                        .anyRequest().authenticated() // All other endpoints require authentication
+                )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
 
         return http.build();
     }

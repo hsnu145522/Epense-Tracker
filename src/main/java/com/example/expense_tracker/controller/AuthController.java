@@ -7,6 +7,11 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -46,6 +51,7 @@ public class AuthController {
     @AllArgsConstructor
     public static class AuthResponse {
         private String token;
+        private UUID userId;
     }
 
     @PostMapping("/register")
@@ -63,7 +69,9 @@ public class AuthController {
         newUser.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         userService.createUser(newUser);
 
-        return ResponseEntity.ok("User registered successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User registered successfully");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
@@ -73,7 +81,8 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             String token = jwtService.generateToken(request.getUsername());
-            return ResponseEntity.ok(new AuthResponse(token));
+            User user = userService.findByUsername(request.getUsername());
+            return ResponseEntity.ok(new AuthResponse(token, user.getId()));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Invalid username or password");
         }

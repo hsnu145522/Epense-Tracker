@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.expense_tracker.repository.UserRepository;
 import com.example.expense_tracker.entity.User;
 
+import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,11 @@ public class UserService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
 }
