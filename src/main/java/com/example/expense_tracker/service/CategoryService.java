@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-
 @Service
 public class CategoryService {
 
@@ -23,8 +22,8 @@ public class CategoryService {
     private UserRepository userRepository;
 
     public Category createCategory(UUID userId, String name, CategoryType type) {
-        if (categoryRepository.findByName(name).isPresent()) {
-            throw new RuntimeException("Category already exists");
+        if (categoryRepository.findByUserIdAndNameAndType(userId, name, type).isPresent()) {
+            throw new RuntimeException("Category with same name of this type already exists");
         }
 
         User user = userRepository.findById(userId)
