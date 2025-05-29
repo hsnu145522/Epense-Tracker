@@ -34,7 +34,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless, JWT-based
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/index.html", "/register.html", "/dashboard.html", "/css/**", "/js/**",
+                        .requestMatchers("/index.html", "/register.html", "/dashboard.html", "/categories.html",
+                                "/css/**", "/js/**",
                                 "/images/**", "/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/favicon.ico")
                         .permitAll() // Public
                         // access

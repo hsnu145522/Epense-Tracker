@@ -82,6 +82,71 @@ export async function deleteAccount(accountId, token) {
   if (!response.ok) throw new Error("Failed to delete account");
 }
 
+// === Category ===
+export async function getCategoriesByUser(userId, token) {
+  const response = await fetch(`${API_BASE_URL}/api/categories/user/${userId}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!response.ok) throw new Error("Failed to fetch categories");
+  return await response.json();
+}
+
+export async function createCategory(userId, name, type, token) {
+  const response = await fetch(`${API_BASE_URL}/api/categories/user/${userId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      name: name,
+      type: type
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create category");
+  }
+
+  return await response.json();
+}
+
+// Update a category by ID
+export async function updateCategory(id, name, token) {
+  const response = await fetch(`/api/categories/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Failed to update category');
+  }
+
+  return response.json();
+}
+
+// Delete a category by ID
+export async function deleteCategory(id, token) {
+  const response = await fetch(`/api/categories/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Failed to delete category');
+  }
+
+  return true; // or response.json() if your API returns JSON on delete
+}
+
 // === Transaction ===
 export async function getTransactionsByAccount(accountId, token) {
   const response = await fetch(`${API_BASE_URL}/api/transactions/account/${accountId}`, {
@@ -103,27 +168,5 @@ export async function getTransactionsByAccount(accountId, token) {
 //     headers: { Authorization: `Bearer ${token}` }
 //   });
 //   if (!response.ok) throw new Error("Failed to create transaction");
-//   return await response.json();
-// }
-
-// // === Category ===
-// export async function getCategoriesByUser(userId, token) {
-//   const response = await fetch(`${API_BASE_URL}/api/categories/user/${userId}`, {
-//     headers: { Authorization: `Bearer ${token}` }
-//   });
-//   if (!response.ok) throw new Error("Failed to fetch categories");
-//   return await response.json();
-// }
-
-// export async function createCategory(userId, name, type, token) {
-//   const url = new URL(`${API_BASE_URL}/api/categories/user/${userId}`);
-//   url.searchParams.append("name", name);
-//   url.searchParams.append("type", type);
-
-//   const response = await fetch(url, {
-//     method: "POST",
-//     headers: { Authorization: `Bearer ${token}` }
-//   });
-//   if (!response.ok) throw new Error("Failed to create category");
 //   return await response.json();
 // }

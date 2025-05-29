@@ -6,6 +6,10 @@ const userId = localStorage.getItem('userId');
 const username = localStorage.getItem('username');
 console.log('Token:', token);
 console.log('User ID:', userId);
+if (!token || !userId || !username) {
+    alert("You must be logged in to view the dashboard.");
+    window.location.href = "index.html"; // Redirect to login page
+}
 
 // Refresh
 document.addEventListener('DOMContentLoaded', () => {
