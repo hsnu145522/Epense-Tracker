@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await loginUser(username, password);
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("userId", data.userId);
-                localStorage.setItem("username", data.username);
+                localStorage.setItem("username", username);
                 window.location.href = "dashboard.html";
             } catch (err) {
                 alert("Login failed: " + err.message);
