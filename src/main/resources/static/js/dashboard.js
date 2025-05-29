@@ -34,6 +34,7 @@ export async function loadDashboard() {
         renderTransactions(allTransactions);
         // Update account display in Transcation modal
         const accountSelect = document.getElementById('transactionAccount');
+        accountSelect.innerHTML = '<option value="">Select Account</option>';
         accounts.forEach(acc => {
             const option = document.createElement('option');
             option.value = acc.id;
