@@ -31,3 +31,12 @@ CREATE TABLE IF NOT EXISTS transaction (
     CONSTRAINT fk_transaction_account FOREIGN KEY (account_id) REFERENCES account(id),
     CONSTRAINT fk_transaction_category FOREIGN KEY (category_id) REFERENCES category(id)
 );
+
+-- Update passwords to hashed versions
+UPDATE users 
+SET password = '$2a$12$Da20.2k4xCRBoJv8hG.MBu0erGQ8KokQ46zaZg7WLlS9d.WCLe/LO' 
+WHERE username = 'eric901209';
+
+UPDATE users 
+SET password = '$2a$12$RutGLGdl9Xyl.Uvf1KYA1uHceM6FZweJbgdWm6776aRxyNiKw/2oe' 
+WHERE username = 'testuser';
