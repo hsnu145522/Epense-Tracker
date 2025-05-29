@@ -17,7 +17,6 @@ document.getElementById("accountForm").addEventListener("submit", async (e) => {
 
     try {
         await createAccount(userId, name, balance, token);
-        alert("Account created!");
         e.target.reset();
         // Close the modal
         const modalElement = document.getElementById("accountModal");

@@ -29,7 +29,6 @@ document.getElementById("categoryForm").addEventListener("submit", async (e) => 
 
     try {
         await createCategory(userId, name, type, token);
-        alert("Category created!");
         e.target.reset();
 
         // Close modal if you use one
@@ -115,7 +114,6 @@ async function handleEditCategory(id, currentName, currentType) {
 
     try {
         await updateCategory(id, newName, token);
-        alert('Category updated.');
         loadCategories(); // re-render after update
     } catch (err) {
         alert('Failed to update category: ' + err.message);

@@ -44,7 +44,6 @@ document.getElementById('transactionForm').addEventListener('submit', async (e) 
 
     try {
         await createTransaction(categoryId, accountId, amount, description, token);
-        alert('Transaction created!');
         e.target.reset();
 
         // Close modal (Bootstrap 5)
