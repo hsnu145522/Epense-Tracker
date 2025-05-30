@@ -40,3 +40,12 @@ WHERE username = 'eric901209';
 UPDATE users 
 SET password = '$2a$12$RutGLGdl9Xyl.Uvf1KYA1uHceM6FZweJbgdWm6776aRxyNiKw/2oe' 
 WHERE username = 'testuser';
+
+CREATE TABLE audit (
+    id SERIAL PRIMARY KEY,
+    account_id UUID NOT NULL,
+    old_balance NUMERIC(12, 2),
+    new_balance NUMERIC(12, 2),
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_audit_account FOREIGN KEY (account_id) REFERENCES account(id)
+);

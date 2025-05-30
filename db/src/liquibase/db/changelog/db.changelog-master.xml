@@ -15,4 +15,5 @@
     <include file="db/changelog/update-category-table.xml"/>
     <include file="db/changelog/update-transcation-table.xml"/>
     <include file="db/changelog/update-user-passwords.xml"/>
+    <include file="db/changelog/create-audit-table.xml"/>
 </databaseChangeLog>
