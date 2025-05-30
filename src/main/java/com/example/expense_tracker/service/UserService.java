@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.example.expense_tracker.repository.UserRepository;
 import com.example.expense_tracker.entity.User;
 
-import java.lang.StackWalker.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +16,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -28,7 +33,12 @@ public class UserService {
 
     public User createUser(User user) {
         user.setId(UUID.randomUUID());
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        // Create default categories for the new user
+        categoryService.createDefaultCategoriesForUser(user.getId());
+        accountService.createDefaultAccountsForUser(user.getId());
+        return user;
     }
 
     public User updateUser(UUID id, User updatedUser) {

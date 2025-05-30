@@ -1,6 +1,7 @@
 package com.example.expense_tracker.service;
 
 import com.example.expense_tracker.entity.Account;
+import com.example.expense_tracker.entity.Category.CategoryType;
 import com.example.expense_tracker.entity.User;
 import com.example.expense_tracker.repository.AccountRepository;
 import com.example.expense_tracker.repository.UserRepository;
@@ -39,6 +40,10 @@ public class AccountService {
         account.setBalance(initialBalance != null ? initialBalance : BigDecimal.ZERO);
 
         return accountRepository.save(account);
+    }
+    public void createDefaultAccountsForUser(UUID userId) {
+        // Default Accounts
+        createAccount(userId, "Cash", BigDecimal.ZERO);
     }
 
     public Optional<Account> getAccountById(UUID accountId) {

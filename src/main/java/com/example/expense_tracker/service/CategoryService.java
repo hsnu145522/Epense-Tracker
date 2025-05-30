@@ -36,6 +36,16 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    public void createDefaultCategoriesForUser(UUID userId) {
+        // Default categories
+        createCategory(userId, "Salery", CategoryType.INCOME);
+        createCategory(userId, "Bonus", CategoryType.INCOME);
+        createCategory(userId, "Other Income", CategoryType.INCOME);
+        createCategory(userId, "Food", CategoryType.EXPENSE);
+        createCategory(userId, "Transportation", CategoryType.EXPENSE);
+        createCategory(userId, "Other Expense", CategoryType.EXPENSE);
+    }
+
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
