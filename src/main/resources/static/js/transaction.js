@@ -66,9 +66,11 @@ export async function renderTransactions(transactions) {
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
 
         const info = document.createElement('div');
+        info.className = 'transcation-info';
         info.innerText = `${tx.timestamp} - ${tx.category.name} - $${tx.amount} (${tx.description || ''})`;
 
         const btnGroup = document.createElement('div');
+        btnGroup.className = 'btn-group';
 
         const editBtn = document.createElement('button');
         editBtn.className = 'btn btn-sm btn-outline-primary me-2';

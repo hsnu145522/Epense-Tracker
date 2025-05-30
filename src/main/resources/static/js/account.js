@@ -43,12 +43,12 @@ export async function renderAccounts(accounts) {
         const btnGroup = document.createElement('span');
 
         const editBtn = document.createElement('button');
-        editBtn.className = 'btn btn-sm btn-primary me-2';
+        editBtn.className = 'btn btn-sm btn-outline-primary me-2';
         editBtn.innerText = 'Edit';
         editBtn.addEventListener('click', () => handleEditAccount(acc.id, acc.name, acc.balance));
 
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn btn-sm btn-danger';
+        deleteBtn.className = 'btn btn-sm btn-outline-danger';
         deleteBtn.innerText = 'Delete';
         deleteBtn.addEventListener('click', () => handleDeleteAccount(acc.id));
 

@@ -1,0 +1,11 @@
+.transaction-info {
+    max-width: 70%; /* Limit the width of the info text */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.5rem; /* Add spacing between buttons */
+}

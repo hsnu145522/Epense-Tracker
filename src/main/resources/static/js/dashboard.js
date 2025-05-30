@@ -5,8 +5,6 @@ import { getAccountsByUser, getTransactionsByAccount, getCategoriesByUser } from
 const token = localStorage.getItem('token');
 const userId = localStorage.getItem('userId');
 const username = localStorage.getItem('username');
-console.log('Token:', token);
-console.log('User ID:', userId);
 if (!token || !userId || !username) {
     alert("You must be logged in to view the dashboard.");
     window.location.href = "index.html"; // Redirect to login page
@@ -14,7 +12,6 @@ if (!token || !userId || !username) {
 
 // Refresh
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('username').innerText = username;
     loadDashboard();
 });
 
@@ -23,15 +20,19 @@ document.getElementById('logoutBtn').addEventListener('click', logout);
 
 export async function loadDashboard() {
     try {
+        document.getElementById('username').innerText = username;
         const accounts = await getAccountsByUser(userId, token);
         renderAccounts(accounts);
 
         const allTransactions = [];
+        let totalBalance = 0;
         for (const acc of accounts) {
             const txs = await getTransactionsByAccount(acc.id, token);
             allTransactions.push(...txs);
+            totalBalance += acc.balance;
         }
         renderTransactions(allTransactions);
+        document.getElementById('totalBalance').innerText = `$${totalBalance}`;
         // Update account display in Transcation modal
         const accountSelect = document.getElementById('transactionAccount');
         accountSelect.innerHTML = '<option value="">Select Account</option>';

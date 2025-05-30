@@ -2,8 +2,7 @@ import { createCategory, getCategoriesByUser, updateCategory, deleteCategory } f
 
 const token = localStorage.getItem('token');
 const userId = localStorage.getItem('userId');
-console.log('Token:', token);
-console.log('User ID:', userId);
+const username = localStorage.getItem('username');
 if (!token || !userId) {
     alert("You must be logged in to create a category.");
     window.location.href = "index.html"; // Redirect to login page
@@ -45,6 +44,7 @@ document.getElementById("categoryForm").addEventListener("submit", async (e) => 
 
 async function loadCategories() {
     try {
+        document.getElementById('username').innerText = username;
         const categories = await getCategoriesByUser(userId, token);
         renderCategories(categories);
 
