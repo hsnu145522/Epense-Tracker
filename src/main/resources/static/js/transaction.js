@@ -67,7 +67,15 @@ export async function renderTransactions(transactions) {
 
         const info = document.createElement('div');
         info.className = 'transcation-info';
-        info.innerText = `${tx.timestamp} - ${tx.category.name} - $${tx.amount} (${tx.description || ''})`;
+
+        const formattedTimestamp = new Date(tx.timestamp).toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+        info.innerText = `${formattedTimestamp} - ${tx.category.name} - $${tx.amount} (${tx.description || ''})`;
 
         const btnGroup = document.createElement('div');
         btnGroup.className = 'btn-group';
