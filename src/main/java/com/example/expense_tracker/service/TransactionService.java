@@ -21,6 +21,9 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
@@ -59,8 +62,7 @@ public class TransactionService {
             newBalance = account.getBalance().subtract(amount);
 
         }
-        account.setBalance(newBalance);
-        accountRepository.save(account);
+        accountService.updateAccount(account.getId(), account.getName(), newBalance);
 
         return tx;
     }
@@ -82,17 +84,16 @@ public class TransactionService {
         Category category = transaction.getCategory();
 
         // Revert old transaction effect
+        BigDecimal updatedBalance = account.getBalance();
         if (category.getType() == Category.CategoryType.INCOME) {
-            account.setBalance(account.getBalance().subtract(oldAmount));
-            account.setBalance(account.getBalance().add(newAmount));
+            updatedBalance = updatedBalance.subtract(oldAmount).add(newAmount);
         } else {
-            account.setBalance(account.getBalance().add(oldAmount));
-            account.setBalance(account.getBalance().subtract(newAmount));
+            updatedBalance = updatedBalance.subtract(newAmount).add(oldAmount);
         }
 
         transaction.setAmount(newAmount);
         transactionRepository.save(transaction);
-        accountRepository.save(account);
+        accountService.updateAccount(account.getId(), account.getName(), updatedBalance);
 
         return transaction;
     }
@@ -106,13 +107,14 @@ public class TransactionService {
         BigDecimal amount = transaction.getAmount();
 
         // Roll back transaction effect
+        BigDecimal updatedBalance = account.getBalance();
         if (category.getType() == Category.CategoryType.INCOME) {
-            account.setBalance(account.getBalance().subtract(amount));
+            updatedBalance = updatedBalance.subtract(amount);
         } else {
-            account.setBalance(account.getBalance().add(amount));
+            updatedBalance = updatedBalance.add(amount);
         }
 
-        accountRepository.save(account);
+        accountService.updateAccount(account.getId(), account.getName(), updatedBalance);
         transactionRepository.delete(transaction);
     }
 }
