@@ -58,6 +58,13 @@ document.getElementById('transactionForm').addEventListener('submit', async (e) 
     }
 });
 
+document.getElementById('transactionModal').addEventListener('hidden.bs.modal', () => {
+    const accountSelect = document.getElementById('transactionAccount');
+    accountSelect.disabled = false;
+
+    loadDashboard();
+});
+
 export async function renderTransactions(transactions) {
     const list = document.getElementById('transactionList');
     list.innerHTML = '';
@@ -123,4 +130,21 @@ async function handleEditTransaction(tx) {
     } catch (err) {
         alert('Failed to update category: ' + err.message);
     }
+}
+
+export function handleNewTransactionFromAccount(accountId, accountName, balance) {
+    const accountSelect = document.getElementById('transactionAccount');
+
+    // Set selected account and disable the dropdown to avoid changing it
+    accountSelect.innerHTML = `<option value="${accountId}" selected>${accountName} ($${balance.toFixed(2)})</option>`;
+    accountSelect.disabled = true;
+
+    // Reset the rest of the form
+    document.getElementById('transactionForm').reset();
+    document.getElementById('transactionCategory').innerHTML = '<option value="">Select Category</option>';
+    document.getElementById('transactionCategory').disabled = true;
+
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('transactionModal'));
+    modal.show();
 }

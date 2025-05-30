@@ -1,4 +1,5 @@
 import { createAccount, deleteAccount, updateAccount, getAccountAudits } from "./api.js";
+import { handleNewTransactionFromAccount } from "./transaction.js";
 import { loadDashboard } from "./dashboard.js";
 
 const token = localStorage.getItem('token');
@@ -52,6 +53,11 @@ export async function renderAccounts(accounts) {
         deleteBtn.innerText = 'Delete';
         deleteBtn.addEventListener('click', () => handleDeleteAccount(acc.id));
 
+        const newTransactionBtn = document.createElement('button');
+        newTransactionBtn.className = 'btn btn-sm btn-outline-success me-2';
+        newTransactionBtn.innerText = 'New Transaction';
+        newTransactionBtn.addEventListener('click', () => handleNewTransactionFromAccount(acc.id, acc.name, acc.balance));
+
         const historyBtn = document.createElement('button');
         historyBtn.className = 'btn btn-sm btn-outline-info ';
         historyBtn.innerText = 'View History';
@@ -59,6 +65,7 @@ export async function renderAccounts(accounts) {
 
         btnGroup.appendChild(editBtn);
         btnGroup.appendChild(deleteBtn);
+        btnGroup.appendChild(newTransactionBtn);
         btnGroup.appendChild(historyBtn);
 
         li.appendChild(span);
@@ -103,7 +110,7 @@ async function handleAuditHistory(accountId) {
                 hour: '2-digit',
                 minute: '2-digit',
             });
-            li.innerText = `${formattedTimestamp} | ${entry.newBalance < entry.oldBalance? "Expense": "Income"} | ${entry.oldBalance} → ${entry.newBalance}`;
+            li.innerText = `${formattedTimestamp} | ${entry.newBalance < entry.oldBalance ? "Expense" : "Income"} | ${entry.oldBalance} → ${entry.newBalance}`;
             list.appendChild(li);
         });
 
