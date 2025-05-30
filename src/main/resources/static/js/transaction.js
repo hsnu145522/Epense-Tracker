@@ -1,4 +1,4 @@
-import { createTransaction, getCategoriesByUser } from "./api.js";
+import { createTransaction, getCategoriesByUser, deleteTransaction, updateTransaction } from "./api.js";
 import { loadDashboard } from "./dashboard.js";
 
 const token = localStorage.getItem('token');
@@ -63,8 +63,54 @@ export async function renderTransactions(transactions) {
     list.innerHTML = '';
     transactions.forEach(tx => {
         const li = document.createElement('li');
-        li.className = 'list-group-item';
-        li.innerText = `${tx.timestamp} - ${tx.category.name} - $${tx.amount} (${tx.description || ''})`;
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+        const info = document.createElement('div');
+        info.innerText = `${tx.timestamp} - ${tx.category.name} - $${tx.amount} (${tx.description || ''})`;
+
+        const btnGroup = document.createElement('div');
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-sm btn-outline-primary me-2';
+        editBtn.innerText = 'Edit';
+        editBtn.addEventListener('click', () => handleEditTransaction(tx));
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-sm btn-outline-danger';
+        deleteBtn.innerText = 'Delete';
+        deleteBtn.addEventListener('click', () => handleDeleteTransaction(tx.id));
+
+        btnGroup.appendChild(editBtn);
+        btnGroup.appendChild(deleteBtn);
+
+        li.appendChild(info);
+        li.appendChild(btnGroup);
         list.appendChild(li);
     });
+}
+
+async function handleDeleteTransaction(transactionId) {
+    if (!confirm('Are you sure you want to delete this transaction?')) return;
+
+    try {
+        await deleteTransaction(transactionId, token);
+        loadDashboard();
+    } catch (err) {
+        alert('Failed to delete: ' + err.message);
+    }
+}
+
+async function handleEditTransaction(tx) {
+    const newAmount = prompt('Edit ammount:', tx.amount);
+    if (isNaN(newAmount) || newAmount <= 0) {
+        alert('Invalid amount');
+        return;
+    }
+
+    try {
+        await updateTransaction(tx.id, newAmount, token);
+        loadDashboard(); // re-render after update
+    } catch (err) {
+        alert('Failed to update category: ' + err.message);
+    }
 }

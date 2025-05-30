@@ -178,3 +178,26 @@ export async function createTransaction(categoryId, accountId, amount, descripti
 
   return response.json();
 }
+
+export async function updateTransaction(transactionId, newAmount, token) {
+  const res = await fetch(`${API_BASE_URL}/api/transactions/${transactionId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ newAmount })
+  });
+  if (!res.ok) throw new Error('Failed to update transaction');
+  return await res.json();
+}
+
+export async function deleteTransaction(transactionId, token) {
+  const res = await fetch(`${API_BASE_URL}/api/transactions/${transactionId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  if (!res.ok) throw new Error('Failed to delete transaction');
+}
