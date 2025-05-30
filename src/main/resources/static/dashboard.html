@@ -105,7 +105,23 @@
           </form>
         </div>
       </div>
-      <!-- We'll add modals/forms later -->
+      <!-- Audit History Modal -->
+      <div class="modal fade" id="auditModal" tabindex="-1" aria-labelledby="auditModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="auditModalLabel">Audit History</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <ul class="list-group" id="auditList">
+                <!-- Audit entries will go here -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add modals/forms later -->
   </div>
   <script type="module" src="js/dashboard.js"></script>
   <script type="module" src="js/account.js"></script>

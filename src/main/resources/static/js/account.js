@@ -1,4 +1,4 @@
-import { createAccount, deleteAccount, updateAccount } from "./api.js";
+import { createAccount, deleteAccount, updateAccount, getAccountAudits } from "./api.js";
 import { loadDashboard } from "./dashboard.js";
 
 const token = localStorage.getItem('token');
@@ -48,12 +48,18 @@ export async function renderAccounts(accounts) {
         editBtn.addEventListener('click', () => handleEditAccount(acc.id, acc.name, acc.balance));
 
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn btn-sm btn-outline-danger';
+        deleteBtn.className = 'btn btn-sm btn-outline-danger me-2';
         deleteBtn.innerText = 'Delete';
         deleteBtn.addEventListener('click', () => handleDeleteAccount(acc.id));
 
+        const historyBtn = document.createElement('button');
+        historyBtn.className = 'btn btn-sm btn-outline-info ';
+        historyBtn.innerText = 'View History';
+        historyBtn.addEventListener('click', () => handleAuditHistory(acc.id));
+
         btnGroup.appendChild(editBtn);
         btnGroup.appendChild(deleteBtn);
+        btnGroup.appendChild(historyBtn);
 
         li.appendChild(span);
         li.appendChild(btnGroup);
@@ -78,5 +84,32 @@ async function handleEditAccount(id, name, balance) {
         updateAccount(id, newName, parseFloat(newBalance), token)
             .then(loadDashboard)
             .catch(err => alert("Failed to update account: " + err.message));
+    }
+}
+
+async function handleAuditHistory(accountId) {
+    try {
+        const audits = await getAccountAudits(accountId, token);
+        const list = document.getElementById('auditList');
+        list.innerHTML = '';
+
+        audits.forEach(entry => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item';
+            const formattedTimestamp = new Date(entry.timestamp).toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+            li.innerText = `${formattedTimestamp} | ${entry.newBalance < entry.oldBalance? "Expense": "Income"} | ${entry.oldBalance} → ${entry.newBalance}`;
+            list.appendChild(li);
+        });
+
+        const modal = new bootstrap.Modal(document.getElementById('auditModal'));
+        modal.show();
+    } catch (err) {
+        alert("Error loading audit history: " + err.message);
     }
 }

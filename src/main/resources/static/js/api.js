@@ -201,3 +201,18 @@ export async function deleteTransaction(transactionId, token) {
   });
   if (!res.ok) throw new Error('Failed to delete transaction');
 }
+
+// === Audit History ===
+export async function getAccountAudits(accountId, token) {
+  const response = await fetch(`${API_BASE_URL}/api/audits/account/${accountId}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+      }
+  });
+
+  if (!response.ok) {
+      throw new Error('Failed to fetch audit history');
+  }
+
+  return await response.json();
+}
