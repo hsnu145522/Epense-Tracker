@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="update-transcation-table" author="dchuang">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="transaction"/>
+            </not>
+        </preConditions>
+        <createTable tableName="transaction">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="note" type="TEXT"/>
+        </createTable>
+
+        <addForeignKeyConstraint 
+            baseTableName="transaction"
+            baseColumnNames="account_id"
+            referencedTableName="account"
+            referencedColumnNames="id"
+            constraintName="fk_transaction_account"/>
+
+        <addForeignKeyConstraint 
+            baseTableName="transaction"
+            baseColumnNames="category_id"
+            referencedTableName="category"
+            referencedColumnNames="id"
+            constraintName="fk_transaction_category"/>
+    </changeSet>
+    <!-- Insert transcations-->
+    <changeSet id="new-insert-transcations" author="eric">
+        <comment>Insert sample transactions for test user</comment>
+
+        <!-- Transaction 1 -->
+        <insert tableName="transaction">
+            <column name="id" value="44444444-4444-4444-4444-444444444444"/>
+            <column name="account_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="category_id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="amount" valueNumeric="15.75"/>
+            <column name="date" valueDate="2024-05-01T12:00:00"/>
+            <column name="note" value="Lunch at cafe"/>
+        </insert>
+
+        <!-- Transaction 2 -->
+        <insert tableName="transaction">
+            <column name="id" value="55555555-5555-5555-5555-555555555555"/>
+            <column name="account_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="category_id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="amount" valueNumeric="40.00"/>
+            <column name="date" valueDate="2024-05-02T18:45:00"/>
+            <column name="note" value="Dinner with friends"/>
+        </insert>
+
+        <!-- Transaction 3 -->
+        <insert tableName="transaction">
+            <column name="id" value="66666666-6666-6666-6666-666666666666"/>
+            <column name="account_id" value="22222222-2222-2222-2222-222222222222"/>
+            <column name="category_id" value="33333333-3333-3333-3333-333333333333"/>
+            <column name="amount" valueNumeric="100"/>
+            <column name="date" valueDate="2024-05-03T09:30:00"/>
+            <column name="note" value="Coffee and bagel"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
